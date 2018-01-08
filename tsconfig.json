@@ -6,7 +6,7 @@
     "declaration": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "suppressImplicitAnyIndexErrors": false,
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "noImplicitThis": true,
@@ -17,6 +17,9 @@
     "moduleResolution": "node",
     "pretty": true,
     "target": "es2015",
+    "allowJs": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "jsx": "react"
   },
   "formatCodeOptions": {

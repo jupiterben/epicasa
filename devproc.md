@@ -24,4 +24,15 @@ j
   6. 初始化
   electron-forge init epicasa --template=react-typescript
 
-  7.
+  7. 调试 见electron-forge主页文档
+
+  8. electron-devtools-installer: 如果国内无法下载插件可以把下好的插件放到目录下
+  linux: ~/.config/chromium/Default/Extensions/
+  windows:
+  mac: 
+
+# Todo
+1. 快速搜索整个系统的逻辑
+    搜索的逻辑放到另外一个进程中 和 Electron主进程通过ipc通信，（因为Electron的main process 需要处理renderer process和GPU的ipc通信所以不可以被阻塞）
+    需要一个数据库记录上次已搜索过目录的修改时间，只搜索修改时间更新的目录
+

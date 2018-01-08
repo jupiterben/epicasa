@@ -1,10 +1,14 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import { enableLiveReload } from 'electron-compile';
+//import { indexFiles } from './indexFiles';
+import * as child_process from 'child_process';
+//import * as process from 'process';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow: Electron.BrowserWindow | null = null;
+let mainWindow: BrowserWindow | null = null;
+let index_process: child_process.ChildProcess | null = null;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
@@ -24,7 +28,9 @@ const createWindow = async () => {
 
   // Open the DevTools.
   if (isDevMode) {
-    await installExtension(REACT_DEVELOPER_TOOLS);
+    await installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
     mainWindow.webContents.openDevTools();
   }
 
@@ -49,6 +55,8 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+
+  index_process = null;
 });
 
 app.on('activate', () => {
@@ -61,3 +69,19 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+function onIndexFiles(event: Event, args: {}) {
+
+  if (index_process) {
+    return;
+  } else {
+    index_process = child_process.fork(`${__dirname}/indexFiles.js`, ['--inspect=9228' , /*'--debug-brk'*/] );
+    index_process.on('close', function (code: number, signal: string) {
+      index_process = null;
+    });
+    index_process.on('message', (m: any) =>  {
+      console.log(m);
+    });
+  }
+}
+
+ipcMain.on('renderer.indexFiles', onIndexFiles) ;

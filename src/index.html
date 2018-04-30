@@ -9,17 +9,14 @@
 </body>
 
 <script>window.exports = module.exports</script>
-<script type="text/tsx">
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
+<script type="text/tsx" >
+import * as $ from 'jquery';
+import * as App from './app';
 
-let render = () => {
-  const { App } = require('./app');
-  ReactDOM.render(<AppContainer><App /></AppContainer>, document.getElementById('App'));
-}
+let app = new App;
+$(() => {
+    app.init();
+});
 
-render();
-if (module.hot) { module.hot.accept(render); }
 </script>
 </html>

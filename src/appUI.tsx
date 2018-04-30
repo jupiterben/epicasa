@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ipcRenderer } from 'electron';
 //renderer
 
-export class App extends React.Component<any, any> {
+export class AppUI extends React.Component<any, any> {
     indexFiles(e: Event) {
         e.preventDefault();
         ipcRenderer.send('renderer.indexFiles');
